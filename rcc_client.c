@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
 	  ///close everything
   }
  // int nDigits = (int) (floor(log10(abs(len_of_bytes))) + 1);
-  sprintf(buff_random, "%d*", len_of_bytes);
-     buff_size = num_chars + 1;
+  sprintf(buff_random, "%d", len_of_bytes);
+     buff_size = sizeof(int);
      while (buff_sent < buff_size) {
          chars_sent = write(sockfd, buff_random + buff_sent, (size_t) (buff_size));
          if(chars_sent < 0){

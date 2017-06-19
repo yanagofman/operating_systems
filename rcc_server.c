@@ -33,30 +33,36 @@ void* count() {
     int curr;
     int total_sent = 0;
     size_t num_read_chars ;
-    while(len == -1 || chars_read < len ){
+    num_read_chars = read(connfd,len_of_bytes,sizeof(int));
+    len = atoi(len_of_bytes);
+    while(chars_read < len ){
     	num_read_chars = read(connfd,buffer,sizeof(buffer));
     	if(num_read_chars < 0){
     		printf("error reading from socket\n");
     		///close all
     	}
     	for(i = 0;i<num_read_chars;i++){
-    		if(flag == 0){
-    			if(buffer[i] == '*'){
-    				len = atoi(len_of_bytes);
-    				flag = 1;
-    			}
-    			else{
-    				len_of_bytes[i] = buffer[i];
-    			}
-    		}
+    		// if(flag == 0){
+    		// 	if(buffer[i] == '*'){
+    		// 		len = atoi(len_of_bytes);
+    		// 		flag = 1;
+      //       chars_read -= (i+1);
+      //       i++;
+    		// 	}
+    		// 	else{
+    		// 		len_of_bytes[i] = buffer[i];
+    		// 	}
+    		// }
     		if(buffer[i] >= 32 && buffer[i] <= 126){
-    			curr_stats[buffer[i] - 32] ++;
+          printf("location of char %c: %d\n",i+32,(int)buffer[i] - 32);
+    			curr_stats[(int) buffer[i] - 32] ++;
     			printable++;
     		}
 
     	}
+
     	chars_read += num_read_chars;
-		total_bytes_read += num_read_chars;
+		  total_bytes_read += num_read_chars;
     }
     char back_to_client[1024];
     sprintf(back_to_client, "%d", printable);
@@ -65,7 +71,7 @@ void* count() {
         total_sent  ++;
     }
     while (sent_bytes_to_client < total_sent) {
-    	curr = write(connfd, back_to_client, total_sent);
+    	curr = write(connfd, back_to_client + sent_bytes_to_client, total_sent - sent_bytes_to_client);
         if( curr < 0){
         	printf("error writing to client\n");
         	///close all
@@ -77,7 +83,7 @@ void* count() {
     	close(connfd);
     	pthread_exit(NULL);
     }
-
+    count_threads--;
     for (i = 0; i < 95; i++){
         stats[i] += curr_stats[i];
     }
@@ -87,7 +93,7 @@ void* count() {
     	pthread_exit(NULL);
 
     }
-    count_threads--;
+    
     /* close socket  */
     close(connfd);
     pthread_exit(NULL);
@@ -95,8 +101,10 @@ void* count() {
 
 void my_signal_handler( int signum,siginfo_t* info, void* ptr){
 	close(listenfd);
-	while(count_threads != 0){
+  int i = 0;
+	while( i < 5 && count_threads != 0){
 		sleep(1);
+    i++;
 	}
 	 if(pthread_mutex_lock(&lock) != 0){
 	    	printf("error locking mutex\n");
@@ -104,7 +112,6 @@ void my_signal_handler( int signum,siginfo_t* info, void* ptr){
 	    }
 	 printf("total bytes read is:%d\n", total_bytes_read);
 	 printf("we saw ");
-	 int i;
 	 for(i=0;i<95;i++){
 		 printf("%d '%c's, ",stats[i], (i+32));
 	 }
