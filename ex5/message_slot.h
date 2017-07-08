@@ -10,6 +10,12 @@
 #define DEVICE_RANGE_NAME "message_slot"
 #define DEVICE_FILE_NAME "message_slot"///the same??
 
+#define MAJOR_NUM 247
+
+
+/* Set the message of the device driver */
+#define IOCTL_SET_CHA _IOW(MAJOR_NUM, 0, unsigned long)
+
 typedef struct message_slot {
     char buff1[BUF_LEN];
     char buff2[BUF_LEN];
