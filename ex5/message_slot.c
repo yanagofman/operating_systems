@@ -143,22 +143,22 @@ static ssize_t device_read(struct file *file, char __user * buffer, size_t lengt
 	    }
 	    if(tmp->device_struct->num == 0){
 	    	for(i = 0; i<length && i < BUF_LEN;i++){
-	    		put_user(tmp->device_struct->buff1[i],buffer[i]);
+	    		put_user(tmp->device_struct->buff1[i], buffer + i);
 	    	}
 	    }
     if(tmp->device_struct->num == 1){
     	for(i = 0; i<length && i < BUF_LEN;i++){
-    		put_user(tmp->device_struct->buff2[i],buffer[i]);
+    		put_user(tmp->device_struct->buff2[i], buffer + i);
     	}
     }
     if(tmp->device_struct->num == 2){
     	for(i = 0; i<length && i < BUF_LEN;i++){
-    		put_user(tmp->device_struct->buff3[i],buffer[i]);
+    		put_user(tmp->device_struct->buff3[i], buffer + i);
     	}
     }
     if(tmp->device_struct->num == 3){
     	for(i = 0; i<length && i < BUF_LEN;i++){
-    		put_user(tmp->device_struct->buff4[i],buffer[i]);
+    		put_user(tmp->device_struct->buff4[i], buffer + i);
     	}
     }
 
