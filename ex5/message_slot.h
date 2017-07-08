@@ -7,7 +7,6 @@
 #define HASHSIZE 131
 
 #define SUCCESS 0
-#define NULL 0
 #define DEVICE_RANGE_NAME "message_slot"
 #define DEVICE_FILE_NAME "message_slot"///the same??
 
