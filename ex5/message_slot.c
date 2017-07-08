@@ -14,6 +14,7 @@
 #include <asm/uaccess.h>    /* for get_user and put_user */
 #include <linux/string.h>   /* for memset. NOTE - not string.h!*/
 #include "message_slot.h"
+#include <linux/slab.h>
 
 MODULE_LICENSE("GPL");
 
@@ -23,7 +24,6 @@ struct chardev_info{
 };
 
 
-static int dev_open_flag = 0; /* used to prevent concurent access into the same device */
 static struct chardev_info device_info;
 
 
@@ -75,7 +75,7 @@ struct list *insert(char *name, slot_struct *device_struct)
 
 
 
-void delete_hash(){
+void delete_hash(void){
 	int i;
 	struct list *curr ;
 	for(i=0 ;i < HASHSIZE; i++){
@@ -111,12 +111,12 @@ static int device_open(struct inode *inode, struct file *file)
         spin_unlock_irqrestore(&device_info.lock, flags);
         return SUCCESS;
     }
-
-    slot_struct *new_slot = (slot_struct *) kmalloc(sizeof(slot_struct), GFP_KERNEL);
-    new_slot->buff1 = {'\0'};
-    new_slot->buff2 = {'\0'};
-    new_slot->buff3 = {'\0'};
-    new_slot->buff4 = {'\0'};
+    slot_struct *new_slot;
+    new_slot = (slot_struct *) kmalloc(sizeof(slot_struct), GFP_KERNEL);
+    memset(new_slot->buff1, '\0', BUF_LEN);
+    memset(new_slot->buff2, '\0', BUF_LEN);
+    memset(new_slot->buff3, '\0', BUF_LEN);
+    memset(new_slot->buff4, '\0', BUF_LEN);
     insert(file_name, new_slot);
     spin_unlock_irqrestore(&device_info.lock, flags);
 
