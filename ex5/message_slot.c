@@ -186,7 +186,7 @@ static ssize_t device_write(struct file *file,
 	    }
 	    ans = i;
 	    while(i<BUF_LEN){
-	    	get_user(tmp->device_struct->buff1[i], '\0');
+	    	tmp->device_struct->buff1[i] = '\0';
 	    	i++;
 	    }
 	}
@@ -196,7 +196,7 @@ static ssize_t device_write(struct file *file,
 	    }
 		ans = i;
 		while(i<BUF_LEN){
-			    	get_user(tmp->device_struct->buff2[i], '\0');
+			    	tmp->device_struct->buff2[i] = '\0';
 			    	i++;
 			    }
 
@@ -207,7 +207,7 @@ static ssize_t device_write(struct file *file,
 		}
 		ans = i;
 		while(i<BUF_LEN){
-			    	get_user(tmp->device_struct->buff3[i], '\0');
+			    	tmp->device_struct->buff3[i] = '\0';
 			    	i++;
 			    }
 	}
@@ -217,7 +217,7 @@ static ssize_t device_write(struct file *file,
 		}
 		ans = i;
 		while(i<BUF_LEN){
-			    	get_user(tmp->device_struct->buff4[i], '\0');
+			    	tmp->device_struct->buff4[i] = '\0';
 			    	i++;
 			    }
 	}
