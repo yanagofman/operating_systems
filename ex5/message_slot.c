@@ -225,7 +225,7 @@ static ssize_t device_write(struct file *file,
     return ans;
 }
 
-static long device_ioctl(struct inode*  inode,
+static long device_ioctl(//struct inode*  inode,
                          struct file*   file,
                          unsigned int   cmd,
                          unsigned long  arg) {
