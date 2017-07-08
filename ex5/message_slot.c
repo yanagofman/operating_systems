@@ -101,6 +101,7 @@ static int device_open(struct inode *inode, struct file *file)
 {
 	char file_name[100];
     unsigned long flags; // for spinlock
+    slot_struct *new_slot;
     printk("device_open(%p)\n", file);
 
 
@@ -111,7 +112,6 @@ static int device_open(struct inode *inode, struct file *file)
         spin_unlock_irqrestore(&device_info.lock, flags);
         return SUCCESS;
     }
-    slot_struct *new_slot;
     new_slot = (slot_struct *) kmalloc(sizeof(slot_struct), GFP_KERNEL);
     memset(new_slot->buff1, '\0', BUF_LEN);
     memset(new_slot->buff2, '\0', BUF_LEN);
