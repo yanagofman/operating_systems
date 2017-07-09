@@ -162,10 +162,9 @@ static ssize_t device_read(struct file *file, char __user * buffer, size_t lengt
     	}
     }
 
-    return SUCCESS; // invalid argument error
+    return SUCCESS;
 }
 
-/* somebody tries to write into our device file */
 static ssize_t device_write(struct file *file,
          const char __user * buffer, size_t length, loff_t * offset)
 {

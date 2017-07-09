@@ -10,7 +10,7 @@
 #define DEVICE_RANGE_NAME "message_slot"
 #define DEVICE_FILE_NAME "message_slot"///the same??
 
-#define MAJOR_NUM 247
+#define MAJOR_NUM 246
 
 
 /* Set the message of the device driver */
@@ -24,9 +24,9 @@ typedef struct message_slot {
     int num;
 } slot_struct;
 
-struct list { /* table entry: */
-    struct list *next; /* next entry in chain */
-    char *name; /* defined name */
+struct list {
+    struct list *next;
+    char *name;
     slot_struct *device_struct;
 };
 
