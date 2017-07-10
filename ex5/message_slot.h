@@ -8,12 +8,11 @@
 
 #define SUCCESS 0
 #define DEVICE_RANGE_NAME "message_slot"
-#define DEVICE_FILE_NAME "message_slot"///the same??
+#define DEVICE_FILE_NAME "message_slot"
 
 #define MAJOR_NUM 246
 
 
-/* Set the message of the device driver */
 #define IOCTL_SET_CHA _IOW(MAJOR_NUM, 0, unsigned long)
 
 typedef struct message_slot {
