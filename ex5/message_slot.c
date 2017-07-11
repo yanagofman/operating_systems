@@ -95,6 +95,15 @@ void delete_hash(void){
 
 /***************** char device functions *********************/
 
+
+
+static int device_release(struct inode *inode, struct file *file)
+{
+    printk("device_release(%p,%p)\n", inode, file);
+
+    return SUCCESS;
+}
+
 /* process attempts to open the device file */
 static int device_open(struct inode *inode, struct file *file)
 {
@@ -112,19 +121,8 @@ static int device_open(struct inode *inode, struct file *file)
         return SUCCESS;
     }
     new_slot = (slot_struct *) kmalloc(sizeof(slot_struct), GFP_KERNEL);
-    memset(new_slot->buff1, '\0', BUF_LEN);
-    memset(new_slot->buff2, '\0', BUF_LEN);
-    memset(new_slot->buff3, '\0', BUF_LEN);
-    memset(new_slot->buff4, '\0', BUF_LEN);
     insert(file_name, new_slot);
     spin_unlock_irqrestore(&device_info.lock, flags);
-
-    return SUCCESS;
-}
-
-static int device_release(struct inode *inode, struct file *file)
-{
-    printk("device_release(%p,%p)\n", inode, file);
 
     return SUCCESS;
 }
